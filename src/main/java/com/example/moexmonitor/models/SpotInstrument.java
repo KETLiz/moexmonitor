@@ -6,50 +6,37 @@ import lombok.Data;
 @Data
 public class SpotInstrument {
     public String ticker;
-    public String name;
-    public double price;
-    public String currency;
-    public String boardId;
+    private double open; //цена открытия
+    public double price; //текущая цена
 
-    public String getBoardId() {
-        return boardId;
+
+
+    public double getOpen() {
+        return open;
     }
 
-    public void setBoardId(String boardId) {
-        this.boardId = boardId;
+    public void setOpen(double open) {
+        this.open = open;
     }
+
 
     public void setTicker(String ticker) {
         this.ticker = ticker;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setPrice(double price) {
         this.price = price;
     }
 
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
 
     public String getTicker() {
         return ticker;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public String getCurrency() {
-        return currency;
-    }
 
 
 }

@@ -35,7 +35,7 @@ public class MoexApiClient {
     }
 
     public List<SpotInstrument> fetchSpotInstruments() {
-        String url = moexBaseUrl + "/engines/stock/markets/" + spotMarket + "/securities.xml";
+        String url = moexBaseUrl + "/engines/stock/markets/shares/boards/TQBR/securities.xml";
         String response = restTemplate.getForObject(url, String.class);
         return parseSpotInstruments(response);
     }
@@ -54,20 +54,25 @@ public class MoexApiClient {
             Document doc = builder.parse(new InputSource(new StringReader(xml)));
 
             NodeList rows = doc.getElementsByTagName("row");
-            for (int i = 0; i < rows.getLength(); i++) {
+            int i = 0;
+            while (i < rows.getLength()) {
                 Element row = (Element) rows.item(i);
-                SpotInstrument instrument = new SpotInstrument();
-                instrument.setTicker(row.getAttribute("SECID"));
-                instrument.setName(row.getAttribute("SHORTNAME"));
                 if(row.getAttribute("LAST").isEmpty()) {
-                    instrument.setPrice(0.0);
+                    i++;
                 } else {
+                    SpotInstrument instrument = new SpotInstrument();
+                    instrument.setTicker(row.getAttribute("SECID"));
+                    instrument.setOpen(Double.parseDouble(row.getAttribute("OPEN")));
+//                if(row.getAttribute("LAST").isEmpty()) {
+//                    instrument.setPrice(0.0);
+//                } else {
+//                    instrument.setPrice(Double.parseDouble(row.getAttribute("LAST")));
+//                }
                     instrument.setPrice(Double.parseDouble(row.getAttribute("LAST")));
+                    instruments.add(instrument);
+                    i++;
                 }
 
-                instrument.setCurrency(row.getAttribute("CURRENCYID"));
-                instrument.setBoardId(row.getAttribute("BOARDID"));
-                instruments.add(instrument);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,19 +88,22 @@ public class MoexApiClient {
             Document doc = builder.parse(new InputSource(new StringReader(xml)));
 
             NodeList rows = doc.getElementsByTagName("row");
-            for (int i = 0; i < rows.getLength(); i++) {
+            int i = 0;
+            while (i < rows.getLength()) {
                 Element row = (Element) rows.item(i);
-                FuturesInstrument instrument = new FuturesInstrument();
-                instrument.setTicker(row.getAttribute("SECID"));
-                instrument.setUnderlyingAsset(row.getAttribute("SHORTNAME"));
                 if(row.getAttribute("LAST").isEmpty()) {
-                    instrument.setPrice(0.0);
+                    i++;
                 } else {
+                    FuturesInstrument instrument = new FuturesInstrument();
+                    instrument.setTicker(row.getAttribute("SECID"));
+                    instrument.setOpen(Double.parseDouble(row.getAttribute("OPEN")));
                     instrument.setPrice(Double.parseDouble(row.getAttribute("LAST")));
+
+                    // Парсинг даты экспирации и других полей
+                    instruments.add(instrument);
+                    i++;
                 }
 
-                // Парсинг даты экспирации и других полей
-                instruments.add(instrument);
             }
         } catch (Exception e) {
             e.printStackTrace();

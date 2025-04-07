@@ -12,11 +12,11 @@ import java.time.LocalDate;
 public class FuturesInstrument {
     @Getter
     public String ticker;
-    private double open; //цена открытия
-    public double price; //текущая цена
+    private double prevPrice; //цена открытия (в секции <data id="securities">)
+    public double last; //текущая цена (в секции <data id="marketdata">)
 
     public void setOpen(double open) {
-        this.open = open;
+        this.prevPrice = open;
     }
 
     public void setTicker(String ticker) {
@@ -24,7 +24,7 @@ public class FuturesInstrument {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.last = price;
     }
 
 
@@ -34,10 +34,10 @@ public class FuturesInstrument {
 
 
     public double getPrice() {
-        return price;
+        return last;
     }
 
     public double getOpen() {
-        return open;
+        return prevPrice;
     }
 }

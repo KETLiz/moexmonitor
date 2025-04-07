@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class SpotInstrument {
     public String ticker;
-    private double open; //цена открытия
-    public double price; //текущая цена
+    private double open; //цена открытия (в секции <data id="marketdata">)
+    public double last; //текущая цена
 
 
 
@@ -25,7 +25,7 @@ public class SpotInstrument {
     }
 
     public void setPrice(double price) {
-        this.price = price;
+        this.last = price;
     }
 
 
@@ -34,9 +34,15 @@ public class SpotInstrument {
     }
 
     public double getPrice() {
-        return price;
+        return last;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "{" +
+                "ticker='" + ticker + '\'' +
+                ", open=" + open +
+                ", last=" + last +
+                '}';
+    }
 }

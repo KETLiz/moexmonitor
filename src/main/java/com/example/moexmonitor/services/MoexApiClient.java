@@ -24,11 +24,6 @@ public class MoexApiClient {
     @Value("${moex.api.base.url}")
     private String moexBaseUrl;
 
-    @Value("${moex.spot.market}")
-    private String spotMarket;
-
-    @Value("${moex.futures.market}")
-    private String futuresMarket;
 
     public MoexApiClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
